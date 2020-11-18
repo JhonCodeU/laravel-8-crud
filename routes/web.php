@@ -25,8 +25,13 @@ Route::get('/', function () {
 
 Route::get('/testdb', [testDbController::class, 'testDBConection']);
 
-Route::resource('categories', CategoryController::class);
+Route::resource('categories', CategoryController::class)->middleware('auth');
 
 Route::resource('/categories/{category}/hospitals', HospitalController::class);
+//esta en el controllador el middleware
 
-Route::post('/categories/{category}/send-email', [CategoryController::class, 'sendEmail'])->name('categories.sendEmail');
+Route::post('/categories/{category}/send-email', [CategoryController::class, 'sendEmail'])->name('categories.sendEmail')->middleware('auth');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

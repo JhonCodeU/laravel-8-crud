@@ -13,6 +13,11 @@ class HospitalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
@@ -85,9 +90,19 @@ class HospitalController extends Controller
      * @param  \App\Models\Hospital  $hospital
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hospital $hospital)
+    public function update(Request $request, Hospital $hospital, Category $category)
     {
-        //
+        dd(request()->all());
+
+        $activeIsset = isset($request->active);
+
+        $hospital->name = $request->name;
+        $hospital->city = $request->city;
+        $hospital->entity = $request->entity;
+        $hospital->is_active = $activeIsset;
+
+        $hospital->update();
+        return back();
     }
 
     /**
